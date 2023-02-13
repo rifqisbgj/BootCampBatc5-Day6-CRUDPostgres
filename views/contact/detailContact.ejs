@@ -1,0 +1,31 @@
+<a href="/contact" class="btn btn-primary btn-sm mt-3">Back Contact</a>
+
+<% if (!detail) { %>
+<div class="alert alert-warning mt-3" role="alert">
+    Data tidak tersedia
+</div>
+<% }else{ %>
+<h2 class="mt-3">Detail Contact <%= detail[0].name %></h2>
+<table class="table">
+    <tr>
+        <th>Nama</th>
+        <td><%= detail[0].name %></td>
+    </tr>
+    <tr>
+        <th>Nomor Handphone</th>
+        <td><%= detail[0].mobile %></td>
+    </tr>
+    <tr>
+        <th>Email</th>
+        <td>
+            <!-- Jika email tidak tersedia -->
+            <% if (!detail[0].email) { %>
+            Email belum diatur
+            <% } %>
+            <!-- akhir kondisi email -->
+            <!-- menampilkan email -->
+            <%= detail[0].email %>
+        </td>
+    </tr>
+</table>
+<% } %>

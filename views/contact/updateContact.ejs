@@ -1,0 +1,35 @@
+<h2 class="mt-2">Edit Contact</h2>
+<% if (!dataContact) { %>
+<div class="alert alert-warning mt-3" role="alert">
+    Data tidak tersedia
+</div>
+<% } else { %>
+<% if (message.length) { %>
+<div class="alert alert-warning" role="alert">
+    <ul>
+        <% message.forEach(dataError => { %>
+        <li><%= dataError.message %></li>
+        <% }) %>
+    </ul>
+</div>
+<% } %>
+<form action="/contact/update/<%= dataContact[0].name %>?_method=PUT" method="POST">
+    <div class="mb-3">
+        <label for="exampleFormControlInput1" class="form-label">Nama</label>
+        <input type="text" name="namakontak" class="form-control" id="exampleFormControlInput1"
+            value="<%= dataContact[0].name %>" required>
+    </div>
+    <div class="mb-3">
+        <label for="exampleFormControlInput1" class="form-label">Email</label>
+        <input type="email" name="email" class="form-control" id="exampleFormControlInput1"
+            placeholder="name@example.com" value="<%= dataContact[0].email %>">
+    </div>
+    <div class="mb-3">
+        <label for="exampleFormControlInput1" class="form-label">Nomor HP</label>
+        <input type="text" name="nomorhp" class="form-control" id="exampleFormControlInput1"
+            value="<%= dataContact[0].mobile %>" required>
+    </div>
+    <input type="submit" class="btn btn-primary">
+    <a href="/contact" class="btn btn-warning">Cancel</a>
+</form>
+<% } %>

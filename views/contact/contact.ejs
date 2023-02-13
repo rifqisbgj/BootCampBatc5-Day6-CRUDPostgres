@@ -1,0 +1,72 @@
+    <h1>Contact List</h1>
+    <a href="/contact/create" class="btn btn-primary btn-sm mb-3">Create</a>
+    <% if (message.length) { %>
+    <div class="alert alert-success" role="alert">
+        <%= message[0].message %>
+    </div>
+    <% } %>
+    <table class="table">
+        <tr>
+            <th>No</th>
+            <th>Nama</th>
+            <th>No Telp</th>
+            <th>Action</th>
+        </tr>
+        <!-- Error handling ketika array kosong -->
+        <% if (!contact.length) { %>
+        <tr>
+            <td colspan="3">Data tidak tersedia</td>
+        </tr>
+        <% } %>
+
+        <!-- Menampilkan data array dari server. -->
+        <!-- contact di bawah ini, merupakan variable yang dilempar app.js -->
+        <% contact.forEach((user, i) => { %>
+        <tr>
+            <td><%= i+=1 %></td>
+            <td><%= user.name %></td>
+            <td><%= user.mobile %></td>
+            <td><a href="/contact/<%= user.name %>" class="btn btn-primary btn-sm">Detail</a>
+                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteData"
+                    data-nama="<%= user.name %>">
+                    Delete
+                </button>
+                <a href="/contact/edit/<%= user.name %>" class="btn btn-warning btn-sm">Update</a>
+            </td>
+        </tr>
+        <% }) %>
+        <!-- end show data contacts -->
+    </table>
+
+    <div class="modal fade" id="deleteData" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Delete Contact</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="/contact/delete?_method=DELETE" id="formDel" method="POST">
+                    <div class="modal-body">
+                        <input type="hidden" name="name" id="namaKontak">
+                        Anda yakin menghapus data <span id="nama"></span> ?
+                    </div>
+                    <div class="modal-footer">
+                        <input type="submit" class="btn btn-primary" value="Ok">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script>
+        $('#deleteData').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var namakontak = button.data('nama');
+
+            var modal = $(this);
+            modal.find('.modal-body #nama').text(namakontak);
+            modal.find('.modal-body #namaKontak').val(namakontak);
+        });
+    </script>

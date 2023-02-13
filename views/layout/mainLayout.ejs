@@ -1,0 +1,11 @@
+<%- include('header') %>
+<%- include('nav') %>
+<!-- secara default akan menambahkan kode pada ejs lain ke dalam include body di bawah ini -->
+<!-- 
+    Opsi kedua yang dapat digunakan adalah menggunakan defineContent('value') pada mainLayout
+    dan contentFor('value') pada ejs lain yang akan masuk pada layout ini
+-->
+<div class="container">
+    <%- body %>
+</div>
+<%- include('footer') %>
