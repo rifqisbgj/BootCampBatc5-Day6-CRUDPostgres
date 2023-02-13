@@ -5,6 +5,7 @@ const db = require('../../db')
 module.exports = async (req, res, oldName, newName, email, mobile) => {
     const message = []
 
+    // check oldnamenya tersedia atau ngga
     const isContact = await checkExist(oldName)
 
     if (!isContact) {
@@ -12,10 +13,10 @@ module.exports = async (req, res, oldName, newName, email, mobile) => {
             status: 404,
             message: 'Data tidak tersedia'
         })
-        return res.status(404)
+        return res.status(404) // jika tidak, maka mengembalikan res status 404
     }
     // jika nama baru dan nama lama beda, maka ganti
-    if (newName != oldName) {
+    if (newName.toLowerCase() != oldName.toLowerCase()) {
         const contactExist = await checkExist(newName)
         if (contactExist) {
             message.push({
@@ -24,6 +25,7 @@ module.exports = async (req, res, oldName, newName, email, mobile) => {
             })
         }
     }
+
 
     const isMobilePhoneValid = Validator.isMobilePhone(mobile, 'id-ID')
     if (!isMobilePhoneValid) { // jika validasi nombor handphone false
@@ -49,13 +51,13 @@ module.exports = async (req, res, oldName, newName, email, mobile) => {
     if (message.length) {
         req.flash('message', message)
         res.redirect(`/contact/edit/${oldName}`)
-        res.status(message[0].status)
-        return false
+        // akan memberikan res status yang pertama masuk pada msg
+        return res.status(message[0].status)
     }
 
     message.push({
         status: 'success',
-        message: 'Data berhasil diubah'
+        message: `Data ${oldName} berhasil diubah`
     })
     req.flash('message', message)
     await db.query(`UPDATE contacts SET name = '${newName}', mobile ='${mobile}', email = '${email}' WHERE name = '${oldName}'`)
